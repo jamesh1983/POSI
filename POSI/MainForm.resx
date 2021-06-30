@@ -117,6 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label1.Text" xml:space="preserve">
+    <value>水质指标
+钙硬度（以碳酸钙计）：98.0mg/L
+镁硬度（以碳酸钙计）：82.2mg/L
+总硬度（以碳酸钙计）：180.2mg/L
+总碱度（以碳酸钙计）：200.0mg/L
+氯离子：100.0mg/L
+钠离子：100.0mg/L
+
+备注：
+对循环冷却水水质要求：
+钙硬+全碱：1100.0mg/L
+氯离子+硫酸根：2500.0mg/L
+硅酸：175.0mg/L
+镁离子x二氧化硅：50000.0</value>
+  </data>
   <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
