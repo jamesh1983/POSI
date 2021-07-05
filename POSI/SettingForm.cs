@@ -28,7 +28,13 @@ namespace POSI
             MainForm.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
             MainForm.Na = Convert.ToDouble(Value_Na_.Text);
             MainForm.Cond = Convert.ToDouble(Value_Cond.Text);
-            Close();
+
+            MainForm.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
+            MainForm.Cl_SO4 = Convert.ToDouble(Value_Cl_SO4_.Text);
+            MainForm.SiO2 = Convert.ToDouble(Value_SiO2.Text);
+            MainForm.Mg_SiO2 = Convert.ToDouble(Value_Mg_SiO2.Text);
+
+            Hide();
             MainForm.Show();
         }
 
@@ -171,42 +177,55 @@ namespace POSI
 
         private void Value_Ca_CaCO3_TextChanged(object sender, EventArgs e)
         {
-            if (Value_Ca_CaCO3.Text == "")
-                Value_Ca_CaCO3.Text = "0.0";
-            Value_Ca_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_CaCO3.Text) / Convert.ToDouble(MainForm.C_Ca), 3));
-            Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
-            Value_Ca_Alkalinity.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Total_Alkalinity.Text));
-            MainForm.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
+            if (checkBox1.Checked)
+            {
+                if (Value_Ca_CaCO3.Text == "")
+                    Value_Ca_CaCO3.Text = "0.0";
+                Value_Ca_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_CaCO3.Text) / Convert.ToDouble(MainForm.C_Ca), 3));
+                Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
+                Value_Ca_Alkalinity.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Total_Alkalinity.Text));
+                MainForm.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
+            }
+            
         }
 
         private void Value_Mg_CaCO3_TextChanged(object sender, EventArgs e)
         {
-            if (Value_Mg_CaCO3.Text == "")
-                Value_Mg_CaCO3.Text = "0.0";
-            Value_Mg_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) / Convert.ToDouble(MainForm.C_Mg), 3));
-            Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
-            Value_Mg_SiO2.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) * Convert.ToDouble(Value_SiO2.Text), 3));
-            MainForm.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
+            if (checkBox1.Checked)
+            {
+                if (Value_Mg_CaCO3.Text == "")
+                    Value_Mg_CaCO3.Text = "0.0";
+                Value_Mg_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) / Convert.ToDouble(MainForm.C_Mg), 3));
+                Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
+                Value_Mg_SiO2.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) * Convert.ToDouble(Value_SiO2.Text), 3));
+                MainForm.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
+            }
         }
 
         private void Value_Ca__TextChanged(object sender, EventArgs e)
         {
-            if (Value_Ca_.Text == "")
-                Value_Ca_.Text = "0.0";
-            Value_Ca_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_.Text) * Convert.ToDouble(MainForm.C_Ca), 3));
-            Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
-            Value_Ca_Alkalinity.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Total_Alkalinity.Text));
-            MainForm.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
+            if (checkBox2.Checked)
+            {
+                if (Value_Ca_.Text == "")
+                    Value_Ca_.Text = "0.0";
+                Value_Ca_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_.Text) * Convert.ToDouble(MainForm.C_Ca), 3));
+                Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
+                Value_Ca_Alkalinity.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Total_Alkalinity.Text));
+                MainForm.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
+            }
         }
 
         private void Value_Mg__TextChanged(object sender, EventArgs e)
         {
-            if (Value_Mg_.Text == "")
-                Value_Mg_.Text = "0.0";
-            Value_Mg_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_.Text) * Convert.ToDouble(MainForm.C_Mg), 3));
-            Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
-            Value_Mg_SiO2.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) * Convert.ToDouble(Value_SiO2.Text), 3));
-            MainForm.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
+            if (checkBox2.Checked)
+            {
+                if (Value_Mg_.Text == "")
+                    Value_Mg_.Text = "0.0";
+                Value_Mg_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_.Text) * Convert.ToDouble(MainForm.C_Mg), 3));
+                Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
+                Value_Mg_SiO2.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) * Convert.ToDouble(Value_SiO2.Text), 3));
+                MainForm.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
+            }
         }
 
         private void Value_Total_Alkalinity_TextChanged(object sender, EventArgs e)
@@ -236,7 +255,7 @@ namespace POSI
             if (Value_Cl_.Text == "")
                 Value_Cl_.Text = "0.0";
             Value_Cl_SO4_.Text = Convert.ToString(Convert.ToDouble(Value_Cl_.Text) + Convert.ToDouble(Value_SO4_.Text));
-            MainForm.COCmax = Convert.ToDouble(Value_Cl_Limit.Text) / Convert.ToDouble(Value_Cl_.Text);
+            MainForm.COC_Cl = Convert.ToDouble(Value_Cl_Limit.Text) / Convert.ToDouble(Value_Cl_.Text);
         }
 
         private void Value_Na__TextChanged(object sender, EventArgs e)
@@ -257,7 +276,7 @@ namespace POSI
         {
             if (Value_Cl_Limit.Text == "")
                 Value_Cl_Limit.Text = "0.0";
-            MainForm.COCmax = Convert.ToDouble(Value_Cl_Limit.Text) / Convert.ToDouble(Value_Cl_.Text);
+            MainForm.COC_Cl = Convert.ToDouble(Value_Cl_Limit.Text) / Convert.ToDouble(Value_Cl_.Text);
         }
     }
 }
