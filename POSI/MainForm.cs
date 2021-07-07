@@ -37,11 +37,13 @@ namespace POSI
         public bool Alkalinity_Input_Flag = false;
 
         private SettingForm settingForm = null;
+        private Form_Test test_form = null;
 
         public MainForm()
         {
             InitializeComponent();
             settingForm = new SettingForm(this);
+            test_form = new Form_Test();
             COC_Cl = Math.Round((Clmax / Cl),2);
             //label_COCmax.Text = "最大浓缩倍数：" + COC_Cl.ToString();
             label4.Text = Ca.ToString();
@@ -60,7 +62,8 @@ namespace POSI
             //Calculate_COC();
             //chart1.ChartAreas[0].AxisX.IsStartedFromZero = true;
             Hide();
-            Show_settingform();
+            //Show_settingform();
+            test_form.Show();
         }
 
         private void button1_Click(object sender, EventArgs e)
