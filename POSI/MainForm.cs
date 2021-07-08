@@ -225,16 +225,5 @@ namespace POSI
                 }
             }
         }
-
-        private void MainForm_Activated(object sender, EventArgs e)
-        {
-            //label4.Text = Ca.ToString();
-            //label7.Text = Mg.ToString();
-            //label10.Text = (Ca + Mg).ToString();
-            //label13.Text = Alkalinity_Input.ToString();
-            //label16.Text = Cl.ToString();
-            //label19.Text = Na.ToString();
-            //Calculate_COC();
-        }
     }
 }
