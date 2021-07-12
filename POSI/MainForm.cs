@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using POSI;
 
 namespace POSI
 {
@@ -112,6 +113,10 @@ namespace POSI
 
         public void Calculate_COC()
         {
+            //POSI pOSI = new POSI
+            //{
+            //    Na = 100.0
+            //};
             label4.Text = Ca.ToString();
             label7.Text = Mg.ToString();
             label10.Text = (Ca + Mg).ToString();
@@ -125,13 +130,13 @@ namespace POSI
 
             if (Alkalinity_Flag && !Alkalinity_Input_Flag)
             {
-                //Alkalinity_Max = Math.Round(COC_Cl*(Math.Pow(10, ((1/ Math.Log10(COC_Cl)) / (Math.Log10(Ca) + Math.Log10(Mg) - Math.Log10(Cl + Na)) + 1))), 2);
-                //Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl) * Math.Log10(Ca * Mg / (Cl + Na)) + 1)))), 2);
-                COC_Cl = COC_Cl - Delta_Coc;
+                //Alkalinity_Max = Math.Round(COC_Cl*(Math.Pow(10, ((1/ Math.Log10(COC_Cl / 1.5)) / (Math.Log10(Ca) + Math.Log10(Mg) - Math.Log10(Cl + Na)) + 1))), 2);
+                //Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na)) + 1)))), 2);
+                COC_Cl = COC_Cl + Delta_Coc;
                 do
                 {
                     COC_Cl = COC_Cl - Delta_Coc;
-                    Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl) * Math.Log10(Ca * Mg / (Cl + Na))) + 1))), 2);
+                    Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1))), 2);
                 } while (Alkalinity_Max < Alkalinity);
                 Ca_Alkalinity = Ca * COC_Cl + Alkalinity_Max;
                 label13.Text = (Alkalinity_Max / COC_Cl).ToString();
@@ -144,15 +149,24 @@ namespace POSI
                 label39.Text = (Mg_SiO2 * COC_Cl).ToString();
                 double[] Xmax_Axis = new double[1];
                 double[] Ymax_Axis = new double[1];
+                int Chart_N = Convert.ToInt32((COC_Cl - 2) / Delta_Coc);
+                double[] X_Axis = new double[Chart_N];
+                double[] Y_Axis = new double[Chart_N];
+                for (int i = 0; i < Chart_N; i++)
+                {
+                    X_Axis[i] = COC_Cl - (Delta_Coc * i);
+                    Y_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X_Axis[i] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                }
                 Xmax_Axis[0] = COC_Cl;
-                Ymax_Axis[0] = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl) * Math.Log10(Ca * Mg / (Cl + Na))) + 1))), 2);
+                Ymax_Axis[0] = Alkalinity_Max;
+                chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                 chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
             }
             
             if (Alkalinity_Input_Flag && !Alkalinity_Flag)
             {
                 COC_Al = Math.Pow(10, 1 / (Math.Log10(Ca * Mg / (Cl + Na)) * Math.Log10(Alkalinity_Input / 10)));
-                COC_Al = Math.Round(COC_Al, 2);
+                COC_Al = Math.Round(COC_Al * 1.5, 2);
                 if (COC_Cl < 2)
                     MessageBox.Show("最大浓缩倍数过低，无法计算，请重新输入~");
                 else
@@ -176,10 +190,10 @@ namespace POSI
                         for (int i = 0; i < Chart_N; i++)
                         {
                             X_Axis[i] = COC_Cl - (Delta_Coc * i);
-                            Y_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X_Axis[i])) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                            Y_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X_Axis[i] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
                         }
                         Xmax_Axis[0] = COC_Cl;
-                        Ymax_Axis[0] = Math.Round(Math.Pow(10, ((1 / Math.Log10(Xmax_Axis[0])) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                        Ymax_Axis[0] = Math.Round(Math.Pow(10, ((1 / Math.Log10(Xmax_Axis[0]) / 1.5) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
                     }
@@ -208,15 +222,15 @@ namespace POSI
                             for (int i = 0; i < Chart_N1; i++)
                             {
                                 X1_Axis[i] = COC_Cl - (Delta_Coc * i);
-                                Y1_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X1_Axis[i])) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                                Y1_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X1_Axis[i] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
                             }
                             for (int i = 0; i < Chart_N2; i++)
                             {
                                 X2_Axis[i] = COC_Al - (Delta_Coc * i);
-                                Y2_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X2_Axis[i])) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                                Y2_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X2_Axis[i] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
                             }
                             Xmax_Axis[0] = COC_Al;
-                            Ymax_Axis[0] = Math.Round(Math.Pow(10, ((1 / Math.Log10(Xmax_Axis[0])) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                            Ymax_Axis[0] = Math.Round(Math.Pow(10, ((1 / Math.Log10(Xmax_Axis[0] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
                             chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
                             //chart1.Series.Add("Series2");
                             chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);

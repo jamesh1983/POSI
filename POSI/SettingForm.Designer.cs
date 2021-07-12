@@ -35,9 +35,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.Value_Ca_Hardness = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -164,9 +161,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Controls.Add(this.Value_Ca_Hardness);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label13);
@@ -191,32 +185,6 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "硬度";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(185, 286);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(29, 12);
-            this.label14.TabIndex = 25;
-            this.label14.Text = "mg/L";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 286);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(41, 12);
-            this.label17.TabIndex = 23;
-            this.label17.Text = "钙硬度";
-            // 
-            // Value_Ca_Hardness
-            // 
-            this.Value_Ca_Hardness.Enabled = false;
-            this.Value_Ca_Hardness.Location = new System.Drawing.Point(133, 283);
-            this.Value_Ca_Hardness.Name = "Value_Ca_Hardness";
-            this.Value_Ca_Hardness.Size = new System.Drawing.Size(46, 21);
-            this.Value_Ca_Hardness.TabIndex = 24;
             // 
             // label11
             // 
@@ -845,9 +813,6 @@
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TextBox Value_Cond;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox Value_Ca_Hardness;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label13;
