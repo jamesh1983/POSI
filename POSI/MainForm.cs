@@ -127,17 +127,18 @@ namespace POSI
             {
                 //Alkalinity_Max = Math.Round(COC_Cl*(Math.Pow(10, ((1/ Math.Log10(COC_Cl)) / (Math.Log10(Ca) + Math.Log10(Mg) - Math.Log10(Cl + Na)) + 1))), 2);
                 //Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl) * Math.Log10(Ca * Mg / (Cl + Na)) + 1)))), 2);
+                COC_Cl = COC_Cl - Delta_Coc;
                 do
                 {
-                    Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl) * Math.Log10(Ca * Mg / (Cl + Na))) + 1))), 2);
                     COC_Cl = COC_Cl - Delta_Coc;
-                } while (Alkalinity_Max > Alkalinity);
-                Ca_Alkalinity = Ca + Alkalinity_Max;
-                label13.Text = Alkalinity_Max.ToString();
+                    Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl) * Math.Log10(Ca * Mg / (Cl + Na))) + 1))), 2);
+                } while (Alkalinity_Max < Alkalinity);
+                Ca_Alkalinity = Ca * COC_Cl + Alkalinity_Max;
+                label13.Text = (Alkalinity_Max / COC_Cl).ToString();
                 label21.Text = COC_Cl.ToString();
                 label22.Text = (Cond * COC_Cl).ToString();
-                label24.Text = (Alkalinity_Input * COC_Cl).ToString();
-                label33.Text = (Ca_Alkalinity * COC_Cl).ToString();
+                label24.Text = Alkalinity_Max.ToString();
+                label33.Text = Ca_Alkalinity.ToString();
                 label31.Text = (Cl_SO4 * COC_Cl).ToString();
                 label36.Text = (SiO2 * COC_Cl).ToString();
                 label39.Text = (Mg_SiO2 * COC_Cl).ToString();
@@ -189,7 +190,7 @@ namespace POSI
                         Ca_Alkalinity = Ca + Alkalinity_Input;
                         label21.Text = COC_Al.ToString();
                         label22.Text = (Cond * COC_Al).ToString();
-                        label24.Text = (Alkalinity * COC_Al).ToString();
+                        label24.Text = (Alkalinity_Input * COC_Al).ToString();
                         label33.Text = (Ca_Alkalinity * COC_Al).ToString();
                         label31.Text = (Cl_SO4 * COC_Al).ToString();
                         label36.Text = (SiO2 * COC_Al).ToString();
