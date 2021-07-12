@@ -43,7 +43,7 @@ namespace POSI
         {
             InitializeComponent();
             settingForm = new SettingForm(this);
-            COC_Cl = Math.Round((Clmax / Cl),2);
+            COC_Cl = Math.Round(Clmax / Cl,2);
             //label_COCmax.Text = "最大浓缩倍数：" + COC_Cl.ToString();
             label4.Text = Ca.ToString();
             label7.Text = Mg.ToString();
@@ -117,6 +117,7 @@ namespace POSI
             //{
             //    Na = 100.0
             //};
+            dataGridView1.DataSource = null;
             label4.Text = Ca.ToString();
             label7.Text = Mg.ToString();
             label10.Text = (Ca + Mg).ToString();
@@ -126,7 +127,7 @@ namespace POSI
             chart1.Series[0].Points.Clear();
             chart1.Series[1].Points.Clear();
             chart1.Series[2].Points.Clear();
-            COC_Cl = Math.Round((Clmax / Cl), 2);
+            COC_Cl = Math.Round(Clmax / Cl, 2);
 
             if (Alkalinity_Flag && !Alkalinity_Input_Flag)
             {
@@ -136,10 +137,11 @@ namespace POSI
                 do
                 {
                     COC_Cl = COC_Cl - Delta_Coc;
-                    Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1))), 2);
+                    Alkalinity_Max = Math.Round(COC_Cl * Math.Pow(10, 1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), 2);
                 } while (Alkalinity_Max < Alkalinity);
-                Ca_Alkalinity = Ca * COC_Cl + Alkalinity_Max;
-                label13.Text = (Alkalinity_Max / COC_Cl).ToString();
+                COC_Cl = Math.Round(COC_Cl, 2);
+                Ca_Alkalinity = Math.Round(Ca * COC_Cl + Alkalinity_Max,2);
+                label13.Text = Math.Round(Alkalinity_Max / COC_Cl, 2).ToString();
                 label21.Text = COC_Cl.ToString();
                 label22.Text = (Cond * COC_Cl).ToString();
                 label24.Text = Alkalinity_Max.ToString();
@@ -155,12 +157,24 @@ namespace POSI
                 for (int i = 0; i < Chart_N; i++)
                 {
                     X_Axis[i] = COC_Cl - (Delta_Coc * i);
-                    Y_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X_Axis[i] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                    Y_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), 2);
                 }
                 Xmax_Axis[0] = COC_Cl;
                 Ymax_Axis[0] = Alkalinity_Max;
                 chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                 chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
+
+                DataTable dt = new DataTable();
+                dt.Columns.Add("浓缩倍数");
+                dt.Columns.Add("循环水控制碱度");
+                for (int row = 0; row < Chart_N; row++) //填充行数据
+                {
+                    DataRow dr = dt.NewRow();
+                    dr[0] = X_Axis[row];
+                    dr[1] = Y_Axis[row];
+                    dt.Rows.Add(dr);
+                }
+                dataGridView1.DataSource = dt;
             }
             
             if (Alkalinity_Input_Flag && !Alkalinity_Flag)
@@ -174,7 +188,7 @@ namespace POSI
                     if (COC_Cl <= COC_Al)
                     {
                         Ca_Alkalinity = Ca + Alkalinity_Input;
-                        label13.Text = (COC_Cl * Alkalinity_Input).ToString();
+                        label13.Text = Math.Round(COC_Cl * Alkalinity_Input, 2).ToString();
                         label21.Text = COC_Cl.ToString();
                         label22.Text = (Cond * COC_Cl).ToString();
                         label24.Text = (Alkalinity_Input * COC_Cl).ToString();
@@ -190,12 +204,24 @@ namespace POSI
                         for (int i = 0; i < Chart_N; i++)
                         {
                             X_Axis[i] = COC_Cl - (Delta_Coc * i);
-                            Y_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X_Axis[i] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                            Y_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), 2);
                         }
                         Xmax_Axis[0] = COC_Cl;
-                        Ymax_Axis[0] = Math.Round(Math.Pow(10, ((1 / Math.Log10(Xmax_Axis[0]) / 1.5) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                        Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), 2);
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
+
+                        DataTable dt = new DataTable();
+                        dt.Columns.Add("浓缩倍数");
+                        dt.Columns.Add("循环水控制碱度");
+                        for (int row = 0; row < Chart_N; row++) //填充行数据
+                        {
+                            DataRow dr = dt.NewRow();
+                            dr[0] = X_Axis[row];
+                            dr[1] = Y_Axis[row];
+                            dt.Rows.Add(dr);
+                        }
+                        dataGridView1.DataSource = dt;
                     }
                     else
                     {
@@ -222,19 +248,38 @@ namespace POSI
                             for (int i = 0; i < Chart_N1; i++)
                             {
                                 X1_Axis[i] = COC_Cl - (Delta_Coc * i);
-                                Y1_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X1_Axis[i] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                                Y1_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), 2);
                             }
                             for (int i = 0; i < Chart_N2; i++)
                             {
                                 X2_Axis[i] = COC_Al - (Delta_Coc * i);
-                                Y2_Axis[i] = Math.Round(Math.Pow(10, ((1 / Math.Log10(X2_Axis[i] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                                Y2_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), 2);
                             }
                             Xmax_Axis[0] = COC_Al;
-                            Ymax_Axis[0] = Math.Round(Math.Pow(10, ((1 / Math.Log10(Xmax_Axis[0] / 1.5)) / (Math.Log10(Ca * Mg / (Cl + Na))) + 1)), 2);
+                            Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), 2);
                             chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
                             //chart1.Series.Add("Series2");
                             chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
                             chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
+
+                            DataTable dt = new DataTable();
+                            dt.Columns.Add("浓缩倍数");
+                            dt.Columns.Add("循环水控制碱度");
+                            for (int row = 0; row < Chart_N1; row++) //填充行数据
+                            {
+                                DataRow dr = dt.NewRow();
+                                dr[0] = X1_Axis[row];
+                                dr[1] = Y1_Axis[row];
+                                dt.Rows.Add(dr);
+                            }
+                            for (int row = 0; row < Chart_N2; row++) //填充行数据
+                            {
+                                DataRow dr = dt.NewRow();
+                                dr[0] = X2_Axis[row];
+                                dr[1] = Y2_Axis[row];
+                                dt.Rows.Add(dr);
+                            }
+                            dataGridView1.DataSource = dt;
                         }
                     }
                 }
