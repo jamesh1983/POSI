@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,5 +34,31 @@ namespace POSI
         public bool 
             Alkalinity_Flag = true,//通过循环水碱度推算浓缩倍数
             Alkalinity_Input_Flag = false;//通过补充水碱度推算浓缩倍数
+
+        //public DataTable Func_Incert_Table(string[] columns, double[][] data)
+        //{
+        //    int Cloumn_N = columns.Length;
+        //    //int C_N = data[][].Length;
+        //    int Row_N = data.Length;
+        //    if (C_N <= Cloumn_N)
+        //    {
+        //        DataTable dt = new DataTable();
+        //        for (int i = 0; i < Cloumn_N; i++) //填充行字段名
+        //        {
+        //            DataRow dr = dt.NewRow();
+        //            dr[i] = columns[i];
+        //            dt.Rows.Add(dr);
+        //        }
+        //        for (int i = 0; i < C_N; i++) //填充行数据
+        //        {
+        //            DataRow dr = dt.NewRow();
+        //            for(int j = 0; j < Row_N; j++)
+        //                dr[j] = data[i][j];
+        //            dt.Rows.Add(dr);
+        //        }
+        //        return dt;
+        //    }
+        //    return null;
+        //}
     }
 }

@@ -92,6 +92,7 @@
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -184,7 +185,7 @@
             this.groupBox1.Size = new System.Drawing.Size(238, 396);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "硬度";
+            this.groupBox1.Text = "补水硬度";
             // 
             // label11
             // 
@@ -343,7 +344,7 @@
             this.groupBox3.Size = new System.Drawing.Size(238, 396);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "其他";
+            this.groupBox3.Text = "其他补水指标";
             // 
             // label35
             // 
@@ -584,7 +585,7 @@
             // 
             // Value_Total_Alkalinity
             // 
-            this.Value_Total_Alkalinity.Location = new System.Drawing.Point(133, 36);
+            this.Value_Total_Alkalinity.Location = new System.Drawing.Point(133, 51);
             this.Value_Total_Alkalinity.Name = "Value_Total_Alkalinity";
             this.Value_Total_Alkalinity.Size = new System.Drawing.Size(46, 21);
             this.Value_Total_Alkalinity.TabIndex = 1;
@@ -594,7 +595,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 39);
+            this.label8.Location = new System.Drawing.Point(6, 54);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 24);
             this.label8.TabIndex = 0;
@@ -603,7 +604,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(185, 39);
+            this.label20.Location = new System.Drawing.Point(185, 54);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(29, 12);
             this.label20.TabIndex = 15;
@@ -682,9 +683,9 @@
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox3.Location = new System.Drawing.Point(6, 20);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(156, 16);
+            this.checkBox3.Size = new System.Drawing.Size(156, 28);
             this.checkBox3.TabIndex = 26;
-            this.checkBox3.Text = "通过循环水碱度限值计算";
+            this.checkBox3.Text = "通过循环水碱度限值计算\r\n（协同石灰或加酸处理）";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
@@ -768,7 +769,7 @@
             this.Name = "SettingForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "补水水质设定";
+            this.Text = "水质设定";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -847,5 +848,6 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
