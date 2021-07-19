@@ -99,8 +99,9 @@ namespace POSI
                                                 Value_Alkalinity_Input.Focus();
                                                 return false;
                                             }
+                                            return true;
                                         }
-                                        MessageBox.Show("缺少循环水碱度限值或补水碱度参数");
+                                        else MessageBox.Show("缺少循环水碱度限值或补水碱度参数");
                                     }
                                 }
                             }
@@ -166,19 +167,19 @@ namespace POSI
             switch (checkBox3.CheckState)
             {
                 case CheckState.Unchecked:
-                    //checkBox4.Checked = true;
+                    checkBox4.Checked = true;
                     //Value_Total_Alkalinity.Text = "";
                     Value_Total_Alkalinity.Enabled = false;
-                    //Value_Alkalinity_Input.Enabled = true;
+                    Value_Alkalinity_Input.Enabled = true;
                     //Value_Alkalinity_Input.Text = "";
                     MainForm.Alkalinity_Flag = false;
                     break;
                 case CheckState.Checked:
-                    //checkBox4.Checked = false;
+                    checkBox4.Checked = false;
                     //Value_Total_Alkalinity.Text = "";
                     Value_Total_Alkalinity.Enabled = true;
-                    //Value_Alkalinity_Input.Enabled = false;
-                    //Value_Alkalinity_Input.Text = "";
+                    Value_Alkalinity_Input.Enabled = false;
+                    Value_Alkalinity_Input.Text = "";
                     MainForm.Alkalinity_Flag = true;
                     break;
                 case CheckState.Indeterminate:
@@ -193,19 +194,19 @@ namespace POSI
             switch (checkBox4.CheckState)
             {
                 case CheckState.Unchecked:
-                    //checkBox3.Checked = true;
+                    checkBox3.Checked = true;
                     //Value_Total_Alkalinity.Text = "";
-                    //Value_Total_Alkalinity.Enabled = true;
+                    Value_Total_Alkalinity.Enabled = true;
                     Value_Alkalinity_Input.Enabled = false;
                     Value_Alkalinity_Input.Text = "";
                     MainForm.Alkalinity_Input_Flag = false;
                     break;
                 case CheckState.Checked:
-                    //checkBox3.Checked = false;
-                    //Value_Total_Alkalinity.Text = "";
-                    //Value_Total_Alkalinity.Enabled = false;
+                    checkBox3.Checked = false;
+                    Value_Total_Alkalinity.Text = "";
+                    Value_Total_Alkalinity.Enabled = false;
                     Value_Alkalinity_Input.Enabled = true;
-                    Value_Alkalinity_Input.Text = "";
+                    //Value_Alkalinity_Input.Text = "";
                     MainForm.Alkalinity_Input_Flag = true;
                     break;
                 case CheckState.Indeterminate:
@@ -313,7 +314,12 @@ namespace POSI
             if (checkBox1.Checked)
             {
                 if (Value_Ca_CaCO3.Text != "")
+                {
                     Value_Ca_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_CaCO3.Text) / Convert.ToDouble(MainForm.C_Ca), 2));
+                    //MainForm.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
+                    //MainForm.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
+                }
+                    
                 if ((Value_Mg_CaCO3.Text != "") && (Value_Ca_CaCO3.Text != ""))
                     Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
                 if ((Value_Total_Alkalinity.Text != "") && (Value_Ca_CaCO3.Text != ""))
@@ -373,8 +379,11 @@ namespace POSI
         private void Value_Alkalinity_Input_TextChanged(object sender, EventArgs e)
         {
             if ((Value_Alkalinity_Input.Text != "") && (Value_Ca_CaCO3.Text != ""))
+            {
                 Value_Ca_Alkalinity.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Alkalinity_Input.Text));
-            MainForm.Alkalinity_Input = Convert.ToDouble(Value_Alkalinity_Input.Text);
+                MainForm.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
+                MainForm.Alkalinity_Input = Convert.ToDouble(Value_Alkalinity_Input.Text);
+            }
         }
 
         private void Value_SO4__TextChanged(object sender, EventArgs e)

@@ -35,9 +35,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.Value_Ca_Hardness = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -95,6 +92,7 @@
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -164,9 +162,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Controls.Add(this.Value_Ca_Hardness);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label13);
@@ -190,33 +185,7 @@
             this.groupBox1.Size = new System.Drawing.Size(238, 396);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "硬度";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(185, 286);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(29, 12);
-            this.label14.TabIndex = 25;
-            this.label14.Text = "mg/L";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 286);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(41, 12);
-            this.label17.TabIndex = 23;
-            this.label17.Text = "钙硬度";
-            // 
-            // Value_Ca_Hardness
-            // 
-            this.Value_Ca_Hardness.Enabled = false;
-            this.Value_Ca_Hardness.Location = new System.Drawing.Point(133, 283);
-            this.Value_Ca_Hardness.Name = "Value_Ca_Hardness";
-            this.Value_Ca_Hardness.Size = new System.Drawing.Size(46, 21);
-            this.Value_Ca_Hardness.TabIndex = 24;
+            this.groupBox1.Text = "补水硬度";
             // 
             // label11
             // 
@@ -375,7 +344,7 @@
             this.groupBox3.Size = new System.Drawing.Size(238, 396);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "其他";
+            this.groupBox3.Text = "其他补水指标";
             // 
             // label35
             // 
@@ -616,7 +585,7 @@
             // 
             // Value_Total_Alkalinity
             // 
-            this.Value_Total_Alkalinity.Location = new System.Drawing.Point(133, 36);
+            this.Value_Total_Alkalinity.Location = new System.Drawing.Point(133, 51);
             this.Value_Total_Alkalinity.Name = "Value_Total_Alkalinity";
             this.Value_Total_Alkalinity.Size = new System.Drawing.Size(46, 21);
             this.Value_Total_Alkalinity.TabIndex = 1;
@@ -626,7 +595,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 39);
+            this.label8.Location = new System.Drawing.Point(6, 54);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 24);
             this.label8.TabIndex = 0;
@@ -635,7 +604,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(185, 39);
+            this.label20.Location = new System.Drawing.Point(185, 54);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(29, 12);
             this.label20.TabIndex = 15;
@@ -714,9 +683,9 @@
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox3.Location = new System.Drawing.Point(6, 20);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(156, 16);
+            this.checkBox3.Size = new System.Drawing.Size(156, 28);
             this.checkBox3.TabIndex = 26;
-            this.checkBox3.Text = "通过循环水碱度限值计算";
+            this.checkBox3.Text = "通过循环水碱度限值计算\r\n（协同石灰或加酸处理）";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
@@ -800,7 +769,7 @@
             this.Name = "SettingForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "补水水质设定";
+            this.Text = "水质设定";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -845,9 +814,6 @@
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TextBox Value_Cond;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox Value_Ca_Hardness;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label13;
@@ -882,5 +848,6 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
