@@ -35,6 +35,7 @@ namespace POSI
         public const double C_Ca = 2.45;
         public const double C_Mg = 4.11;
         public const double Delta_Coc = 0.1;
+        public const double Coc_Max = 15;
         public const double Coc_Min = 3;
         public const int Round_Digital = 1;
 
@@ -49,8 +50,7 @@ namespace POSI
         {
             InitializeComponent();
             settingForm = new SettingForm(this);
-            COC_Cl = Math.Round(Clmax / Cl,2);
-            //label_COCmax.Text = "最大浓缩倍数：" + COC_Cl.ToString();
+            COC_Cl = Math.Round(Clmax / Cl, Round_Digital);
             label4.Text = Ca.ToString();
             label7.Text = Mg.ToString();
             label10.Text = (Ca + Mg).ToString();
@@ -66,8 +66,6 @@ namespace POSI
             label39.Text = (Mg_SiO2 * COC_Cl).ToString();
             dt.Columns.Add("浓缩倍数");
             dt.Columns.Add("循环水控制碱度");
-            //Calculate_COC();
-            //chart1.ChartAreas[0].AxisX.IsStartedFromZero = true;
             Hide();
             Show_settingform();
         }
@@ -155,7 +153,7 @@ namespace POSI
                     //COCmax = Clmax / Cl;
                     //label_COCmax.Text = "最大浓缩倍数：" + COC_Cl.ToString();
                     
-                    Calculate_COC();
+                    //Calculate_COC();
                     break;
                 case DialogResult.Cancel:
                     Show();
@@ -177,26 +175,23 @@ namespace POSI
 
         public void Calculate_COC()
         {
-            //POSI pOSI = new POSI
-            //{
-            //    Na = 100.0
-            //};
             dataGridView1.DataSource = null;
+            dataGridView1.DataMember = null;
+            dt.Rows.Clear();
             label4.Text = Ca.ToString();
             label7.Text = Mg.ToString();
             label10.Text = (Ca + Mg).ToString();
-            //label13.Text = Alkalinity_Input.ToString();
             label16.Text = Cl.ToString();
             label19.Text = Na.ToString();
             chart1.Series[0].Points.Clear();
             chart1.Series[1].Points.Clear();
             chart1.Series[2].Points.Clear();
             COC_Cl = Math.Round(Clmax / Cl, Round_Digital);
+            if (COC_Cl > Coc_Max)
+                COC_Cl = Coc_Max;
 
             if (Alkalinity_Flag && !Alkalinity_Input_Flag)
             {
-                //Alkalinity_Max = Math.Round(COC_Cl*(Math.Pow(10, ((1/ Math.Log10(COC_Cl / 1.5)) / (Math.Log10(Ca) + Math.Log10(Mg) - Math.Log10(Cl + Na)) + 1))), 2);
-                //Alkalinity_Max = Math.Round((COC_Cl * Math.Pow(10, (1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na)) + 1)))), 2);
                 double[] Xmax_Axis = new double[1];
                 double[] Ymax_Axis = new double[1];
                 Xmax_Axis[0] = COC_Cl;
@@ -213,38 +208,6 @@ namespace POSI
                     count += 1;
                     label_COCmax.Text = "最大浓缩倍数：\n（受碱度限制）";
                 } 
-
-                //Alkalinity_Max = Math.Round(COC_Cl * Math.Pow(10, 1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), 2);
-                //Ca_Alkalinity = Math.Round(Ca * COC_Cl + Alkalinity_Max, 2);
-                //while (Ca_Alkalinity  > 1100) 
-                //{
-                //    COC_Cl = COC_Cl - Delta_Coc;
-                //    Alkalinity_Max = Math.Round(COC_Cl * Math.Pow(10, 1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), 2);
-                //    Ca_Alkalinity = Math.Round(Ca * COC_Cl + Alkalinity_Max, 2);
-                //    count += 1;
-                //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水钙硬加全碱限制）";
-                //} 
-
-                //while ((Cl_SO4 * COC_Cl) > 2500)
-                //{
-                //    COC_Cl = COC_Cl - Delta_Coc;
-                //    count += 1;
-                //    label_COCmax.Text = "最大浓缩倍数：\n（受氯离子加硫酸根限制）";
-                //} 
-
-                //while ((SiO2 * COC_Cl) > 175)
-                //{
-                //    COC_Cl = COC_Cl - Delta_Coc;
-                //    count += 1;
-                //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水硅酸限制）";
-                //} 
-
-                //while ((Mg_SiO2 * COC_Cl) > 50000)
-                //{
-                //    COC_Cl = COC_Cl - Delta_Coc;
-                //    count += 1;
-                //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水镁乘硅酸限制）";
-                //}
 
                 if (COC_Cl < Coc_Min)
                     MessageBox.Show("最大浓缩倍数过低，无法计算，请重新输入~");
@@ -274,9 +237,7 @@ namespace POSI
                     double[] Ymin_Axis = new double[1];
                     double[] X_Axis = new double[count];
                     double[] Y_Axis = new double[count];
-                    //int Chart_N = Convert.ToInt32((COC_Cl - 2) / Delta_Coc);
-                    //double[] X_Axis = new double[Chart_N];
-                    //double[] Y_Axis = new double[Chart_N];
+
                     Xmin_Axis[0] = COC_Cl;
                     Ymin_Axis[0] = Alkalinity_Max;
                     for (int i = 0; i < count; i++)
@@ -320,6 +281,8 @@ namespace POSI
             {
                 COC_Al = Math.Pow(10, 1 / (Math.Log10(Ca * Mg / (Cl + Na)) * Math.Log10(Alkalinity_Input / 10)));
                 COC_Al = Math.Round(COC_Al * 1.5, Round_Digital);
+                if (COC_Al > Coc_Max)
+                    COC_Al = Coc_Max;
                 if (COC_Cl < Coc_Min)
                     MessageBox.Show("最大浓缩倍数过低，无法计算，请重新输入~");
                 else
@@ -329,34 +292,6 @@ namespace POSI
                         Ca_Alkalinity = Ca + Alkalinity_Input;
                         label_COCmax.Text = "最大浓缩倍数：\n（受循环水氯离子限制）";
                         
-                        //Alkalinity_Max = Math.Round(COC_Cl * Math.Pow(10, 1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), 2);
-                        //Ca_Alkalinity = Math.Round(Ca * COC_Cl + Alkalinity_Max, 2);
-                        //while (Ca_Alkalinity > 1100)
-                        //{
-                        //    COC_Cl = COC_Cl - Delta_Coc;
-                        //    Alkalinity_Max = Math.Round(COC_Cl * Math.Pow(10, 1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), 2);
-                        //    Ca_Alkalinity = Math.Round(Ca * COC_Cl + Alkalinity_Max, 2);
-                        //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水钙硬加全碱限制）";
-                        //}
-
-                        //while ((Cl_SO4 * COC_Cl) > 2500)
-                        //{
-                        //    COC_Cl = COC_Cl - Delta_Coc;
-                        //    label_COCmax.Text = "最大浓缩倍数：\n（受氯离子加硫酸根限制）";
-                        //}
-
-                        //while ((SiO2 * COC_Cl) > 175)
-                        //{
-                        //    COC_Cl = COC_Cl - Delta_Coc;
-                        //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水硅酸限制）";
-                        //}
-
-                        //while ((Mg_SiO2 * COC_Cl) > 50000)
-                        //{
-                        //    COC_Cl = COC_Cl - Delta_Coc;
-                        //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水镁乘硅酸限制）";
-                        //}
-
                         label13.Text = Math.Round(COC_Cl * Alkalinity_Input, Round_Digital).ToString();
                         label21.Text = COC_Cl.ToString();
                         label22.Text = (Cond * COC_Cl).ToString();
@@ -388,9 +323,6 @@ namespace POSI
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
 
-                        //DataTable dt = new DataTable();
-                        dt.Columns.Add("浓缩倍数");
-                        dt.Columns.Add("循环水控制碱度");
                         for (int row = 0; row < Chart_N; row++) //填充行数据
                         {
                             DataRow dr = dt.NewRow();
@@ -406,34 +338,6 @@ namespace POSI
                         double[] Xmax_Axis = new double[1];
                         double[] Ymax_Axis = new double[1];
                         Ca_Alkalinity = Ca + Alkalinity_Input;
-                        
-                        //Alkalinity_Max = Math.Round(COC_Al * Math.Pow(10, 1 / (Math.Log10(COC_Al / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), 2);
-                        //Ca_Alkalinity = Math.Round(Ca * COC_Al + Alkalinity_Max, 2);
-                        //while (Ca_Alkalinity > 1100)
-                        //{
-                        //    COC_Al = COC_Al - Delta_Coc;
-                        //    Alkalinity_Max = Math.Round(COC_Al * Math.Pow(10, 1 / (Math.Log10(COC_Al / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), 2);
-                        //    Ca_Alkalinity = Math.Round(Ca * COC_Al + Alkalinity_Max, 2);
-                        //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水钙硬加全碱限制）";
-                        //}
-
-                        //while ((Cl_SO4 * COC_Al) > 2500)
-                        //{
-                        //    COC_Al = COC_Al - Delta_Coc;
-                        //    label_COCmax.Text = "最大浓缩倍数：\n（受氯离子加硫酸根限制）";
-                        //}
-
-                        //while ((SiO2 * COC_Al) > 175)
-                        //{
-                        //    COC_Al = COC_Al - Delta_Coc;
-                        //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水硅酸限制）";
-                        //}
-
-                        //while ((Mg_SiO2 * COC_Al) > 50000)
-                        //{
-                        //    COC_Al = COC_Al - Delta_Coc;
-                        //    label_COCmax.Text = "最大浓缩倍数：\n（受循环水镁乘硅酸限制）";
-                        //}
 
                         label21.Text = COC_Al.ToString();
                         label22.Text = (Cond * COC_Al).ToString();
@@ -477,9 +381,6 @@ namespace POSI
                             chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
                             chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
 
-                            //DataTable dt = new DataTable();
-                            dt.Columns.Add("浓缩倍数");
-                            dt.Columns.Add("循环水控制碱度");
                             for (int row = 0; row < Chart_N1; row++) //填充行数据
                             {
                                 DataRow dr = dt.NewRow();
