@@ -195,7 +195,7 @@ namespace POSI
                 double[] Xmax_Axis = new double[1];
                 double[] Ymax_Axis = new double[1];
                 Xmax_Axis[0] = COC_Cl;
-                Ymax_Axis[0] = Math.Round(COC_Cl * Math.Pow(10, 1 / (Math.Log10(Xmax_Axis[0] / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), Round_Digital);
+                Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / (Math.Log10(Xmax_Axis[0] / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), Round_Digital);
                 
                 int count = 0;
                 label_COCmax.Text = "最大浓缩倍数：\n（受氯离子限制）";
@@ -205,6 +205,7 @@ namespace POSI
                 {
                     COC_Cl = COC_Cl - Delta_Coc;
                     Alkalinity_Max = Math.Round(COC_Cl * Math.Pow(10, 1 / (Math.Log10(COC_Cl / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), Round_Digital);
+                            
                     count += 1;
                     label_COCmax.Text = "最大浓缩倍数：\n（受碱度限制）";
                 } 
@@ -242,7 +243,7 @@ namespace POSI
                     for (int i = 0; i < count; i++)
                     {
                         X_Axis[i] = COC_Cl + (Delta_Coc * i);
-                        Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                        Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / (Math.Log10(X_Axis[i] / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), Round_Digital);
                     }
                     int Chart_N = Convert.ToInt32((COC_Cl - Coc_Min) / Delta_Coc);
                     double[] X2_Axis = new double[Chart_N];
@@ -250,7 +251,7 @@ namespace POSI
                     for (int i = 0; i < Chart_N; i++)
                     {
                         X2_Axis[i] = COC_Cl - (Delta_Coc * i);
-                        Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                        Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / (Math.Log10(X2_Axis[i] / 1.5) * Math.Log10(Ca * Mg / (Cl + Na))) + 1), Round_Digital);
                     }
 
                     //chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
@@ -315,10 +316,10 @@ namespace POSI
                         for (int i = 0; i < Chart_N; i++)
                         {
                             X_Axis[i] = COC_Cl - (Delta_Coc * i);
-                            Y_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                         }
                         Xmax_Axis[0] = COC_Cl;
-                        Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                        Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
                         for (int row = 0; row < Chart_N; row++) //填充行数据
@@ -364,15 +365,15 @@ namespace POSI
                             for (int i = 0; i < Chart_N1; i++)
                             {
                                 X1_Axis[i] = COC_Cl - (Delta_Coc * i);
-                                Y1_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                                Y1_Axis[i] = Math.Round(X1_Axis[i] * Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                             }
                             for (int i = 0; i < Chart_N2; i++)
                             {
                                 X2_Axis[i] = COC_Al - (Delta_Coc * i);
-                                Y2_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                                Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                             }
                             Xmax_Axis[0] = COC_Al;
-                            Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                             chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
                             //chart1.Series.Add("Series2");
                             chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
