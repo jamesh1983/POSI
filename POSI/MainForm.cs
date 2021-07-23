@@ -237,10 +237,6 @@ namespace POSI
                     double[] Ymin_Axis = new double[1];
                     double[] X_Axis = new double[count];
                     double[] Y_Axis = new double[count];
-<<<<<<< HEAD
-=======
-
->>>>>>> 27ac2bf8b29c6e8f89eb238169b6bca3c2eed223
                     Xmin_Axis[0] = COC_Cl;
                     Ymin_Axis[0] = Alkalinity_Max;
                     for (int i = 0; i < count; i++)
@@ -325,12 +321,6 @@ namespace POSI
                         Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
-<<<<<<< HEAD
-                        dt.Columns.Add("浓缩倍数");
-                        dt.Columns.Add("循环水控制碱度");
-=======
-
->>>>>>> 27ac2bf8b29c6e8f89eb238169b6bca3c2eed223
                         for (int row = 0; row < Chart_N; row++) //填充行数据
                         {
                             DataRow dr = dt.NewRow();
@@ -346,10 +336,6 @@ namespace POSI
                         double[] Xmax_Axis = new double[1];
                         double[] Ymax_Axis = new double[1];
                         Ca_Alkalinity = Ca + Alkalinity_Input;
-<<<<<<< HEAD
-=======
-
->>>>>>> 27ac2bf8b29c6e8f89eb238169b6bca3c2eed223
                         label21.Text = COC_Al.ToString();
                         label22.Text = (Cond * COC_Al).ToString();
                         label24.Text = (Alkalinity_Input * COC_Al).ToString();
@@ -390,11 +376,6 @@ namespace POSI
                             chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
                             chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
                             chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
-<<<<<<< HEAD
-                            
-=======
-
->>>>>>> 27ac2bf8b29c6e8f89eb238169b6bca3c2eed223
                             for (int row = 0; row < Chart_N1; row++) //填充行数据
                             {
                                 DataRow dr = dt.NewRow();
