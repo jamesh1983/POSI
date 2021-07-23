@@ -86,7 +86,7 @@
             // chart1
             // 
             chartArea1.AxisX.Minimum = 0D;
-            chartArea1.AxisX.Title = "补水碱度";
+            chartArea1.AxisX.Title = "循环水控制碱度";
             chartArea1.AxisX.TitleAlignment = System.Drawing.StringAlignment.Far;
             chartArea1.AxisY.Title = "浓缩倍数";
             chartArea1.AxisY.TitleAlignment = System.Drawing.StringAlignment.Far;

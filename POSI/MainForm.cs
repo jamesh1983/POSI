@@ -237,7 +237,6 @@ namespace POSI
                     double[] Ymin_Axis = new double[1];
                     double[] X_Axis = new double[count];
                     double[] Y_Axis = new double[count];
-
                     Xmin_Axis[0] = COC_Cl;
                     Ymin_Axis[0] = Alkalinity_Max;
                     for (int i = 0; i < count; i++)
@@ -254,7 +253,7 @@ namespace POSI
                         Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                     }
 
-                    chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
+                    //chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                     chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
                     chart1.Series[2].Points.DataBindXY(Ymin_Axis, Xmin_Axis);
                     chart1.Series[3].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
@@ -322,7 +321,6 @@ namespace POSI
                         Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
-
                         for (int row = 0; row < Chart_N; row++) //填充行数据
                         {
                             DataRow dr = dt.NewRow();
@@ -338,7 +336,6 @@ namespace POSI
                         double[] Xmax_Axis = new double[1];
                         double[] Ymax_Axis = new double[1];
                         Ca_Alkalinity = Ca + Alkalinity_Input;
-
                         label21.Text = COC_Al.ToString();
                         label22.Text = (Cond * COC_Al).ToString();
                         label24.Text = (Alkalinity_Input * COC_Al).ToString();
@@ -376,11 +373,10 @@ namespace POSI
                             }
                             Xmax_Axis[0] = COC_Al;
                             Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
-                            chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
-                            //chart1.Series.Add("Series2");
+
+                            //chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
                             chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
                             chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
-
                             for (int row = 0; row < Chart_N1; row++) //填充行数据
                             {
                                 DataRow dr = dt.NewRow();
