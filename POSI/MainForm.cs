@@ -265,13 +265,13 @@ namespace POSI
                         dr[1] = Y_Axis[row];
                         dt.Rows.Add(dr);
                     }
-                    for (int row = 0; row < Chart_N; row++) //填充行数据
-                    {
-                        DataRow dr = dt.NewRow();
-                        dr[0] = X2_Axis[row];
-                        dr[1] = Y2_Axis[row];
-                        dt.Rows.Add(dr);
-                    }
+                    //for (int row = 0; row < Chart_N; row++) //填充行数据
+                    //{
+                    //    DataRow dr = dt.NewRow();
+                    //    dr[0] = X2_Axis[row];
+                    //    dr[1] = Y2_Axis[row];
+                    //    dt.Rows.Add(dr);
+                    //}
                     dataGridView1.DataSource = dt;
                 }
             }
@@ -315,10 +315,10 @@ namespace POSI
                         for (int i = 0; i < Chart_N; i++)
                         {
                             X_Axis[i] = COC_Cl - (Delta_Coc * i);
-                            Y_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / Math.Log10(X_Axis[i]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                         }
                         Xmax_Axis[0] = COC_Cl;
-                        Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                        Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
                         for (int row = 0; row < Chart_N; row++) //填充行数据
@@ -364,19 +364,20 @@ namespace POSI
                             for (int i = 0; i < Chart_N1; i++)
                             {
                                 X1_Axis[i] = COC_Cl - (Delta_Coc * i);
-                                Y1_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                                Y1_Axis[i] = Math.Round(X1_Axis[i] * Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                             }
                             for (int i = 0; i < Chart_N2; i++)
                             {
                                 X2_Axis[i] = COC_Al - (Delta_Coc * i);
-                                Y2_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                                Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                             }
                             Xmax_Axis[0] = COC_Al;
-                            Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
-                            chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
+                            Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            //chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
                             //chart1.Series.Add("Series2");
                             chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
                             chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
+
                             for (int row = 0; row < Chart_N1; row++) //填充行数据
                             {
                                 DataRow dr = dt.NewRow();
@@ -384,13 +385,13 @@ namespace POSI
                                 dr[1] = Y1_Axis[row];
                                 dt.Rows.Add(dr);
                             }
-                            for (int row = 0; row < Chart_N2; row++) //填充行数据
-                            {
-                                DataRow dr = dt.NewRow();
-                                dr[0] = X2_Axis[row];
-                                dr[1] = Y2_Axis[row];
-                                dt.Rows.Add(dr);
-                            }
+                            //for (int row = 0; row < Chart_N2; row++) //填充行数据
+                            //{
+                            //    DataRow dr = dt.NewRow();
+                            //    dr[0] = X2_Axis[row];
+                            //    dr[1] = Y2_Axis[row];
+                            //    dt.Rows.Add(dr);
+                            //}
                             dataGridView1.DataSource = dt;
                         }
                     }
