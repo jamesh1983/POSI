@@ -244,7 +244,7 @@ namespace POSI
                 else
                 {
                     COC_Cl = Math.Round(COC_Cl, Round_Digital);
-                    Ca_Alkalinity = Math.Round(Ca * COC_Cl + Alkalinity_Max, Round_Digital);
+                    Ca_Alkalinity = Math.Round((Ca + Alkalinity_Input) * COC_Cl, Round_Digital);
                     label13.Text = Math.Round(Alkalinity_Max / COC_Cl, Round_Digital).ToString();
                     label21.Text = COC_Cl.ToString();
                     label22.Text = (Cond * COC_Cl).ToString();
@@ -274,12 +274,11 @@ namespace POSI
                     {
                         X_Axis[i] = COC_Cl + (Delta_Coc * i);
                         Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                        if (i > 0)
+                            if (Y_Axis[i] > Y_Axis[i - 1])
+                                Y_Axis[i] = Y_Axis[i - 1];
                     }
-                    for (int i = 0; i < count; i++)
-                    {
-                        X_Axis[i] = COC_Cl + (Delta_Coc * i);
-                        Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
-                    }
+                    
                     int Chart_N = Convert.ToInt32((COC_Cl - Coc_Min) / Delta_Coc);
                     double[] X2_Axis = new double[Chart_N];
                     double[] Y2_Axis = new double[Chart_N];
@@ -287,6 +286,8 @@ namespace POSI
                     {
                         X2_Axis[i] = COC_Cl - (Delta_Coc * i);
                         Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                        //if (Y2_Axis[i] > Y2_Axis[i - 1])
+                        //    Y2_Axis[i] = Y2_Axis[i - 1];
                     }
 
                     chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
@@ -294,14 +295,14 @@ namespace POSI
                     chart1.Series[2].Points.DataBindXY(Ymin_Axis, Xmin_Axis);
                     if (count != 0)
                         chart1.Series[3].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
-                    
-                    //for (int row = 0; row < count; row++) //填充行数据
-                    //{
-                    //    DataRow dr = dt.NewRow();
-                    //    dr[0] = Y_Axis[row];
-                    //    dr[1] = X_Axis[row];
-                    //    dt.Rows.Add(dr);
-                    //}
+
+                    for (int row = 0; row < count; row++) //填充行数据
+                    {
+                        DataRow dr = dt.NewRow();
+                        dr[0] = Y_Axis[row];
+                        dr[1] = X_Axis[row];
+                        dt.Rows.Add(dr);
+                    }
                     for (int row = 0; row < Chart_N; row++) //填充行数据
                     {
                         DataRow dr = dt.NewRow();
@@ -327,7 +328,7 @@ namespace POSI
                 {
                     if (COC_Cl <= COC_Al)
                     {
-                        Ca_Alkalinity = Ca + Alkalinity_Input;
+                        Ca_Alkalinity = Math.Round((Ca + Alkalinity_Input) * COC_Cl, Round_Digital);
                         label_COCmax.Text = "最大浓缩倍数：\n（受循环水氯离子限制）";
                         
                         label13.Text = Math.Round(Alkalinity_Input, Round_Digital).ToString();
@@ -351,21 +352,30 @@ namespace POSI
                         double[] Y_Axis = new double[Chart_N];
                         double[] Xmax_Axis = new double[1];
                         double[] Ymax_Axis = new double[1];
+                        int min = 0;
+                        X_Axis[0] = COC_Cl - (Delta_Coc * Chart_N);
                         for (int i = 0; i < Chart_N; i++)
                         {
-                            X_Axis[i] = COC_Cl - (Delta_Coc * i);
+                            X_Axis[i] = COC_Cl + (Delta_Coc * i);
                             Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            if(i > 0)
+                            {
+                                if (Y_Axis[i] > Y_Axis[i - 1])
+                                    Y_Axis[i] = Y_Axis[i - 1];
+                                else
+                                    min = min + 1;
+                            }
                         }
                         Xmax_Axis[0] = COC_Cl;
-                        Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                        Ymax_Axis[0] = Y_Axis[min];
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
                         for (int row = 0; row < Chart_N; row++) //填充行数据
                         {
                             DataRow dr = dt.NewRow();
 
-                            dr[0] = X_Axis[row];
-                            dr[1] = Y_Axis[row];
+                            dr[0] = Y_Axis[row];
+                            dr[1] = X_Axis[row];
                             
                             dt.Rows.Add(dr);
                         }
@@ -378,7 +388,7 @@ namespace POSI
                         double[] Ymax_Axis = new double[1];
                         double[] Xmin_Axis = new double[1];
                         double[] Ymin_Axis = new double[1];
-                        Ca_Alkalinity = Ca + Alkalinity_Input;
+                        Ca_Alkalinity = Math.Round((Ca + Alkalinity_Input) * COC_Al, Round_Digital);
                         label13.Text = Math.Round(Alkalinity_Input, Round_Digital).ToString();
                         label21.Text = COC_Al.ToString();
                         label22.Text = (Cond * COC_Al).ToString();
@@ -399,47 +409,65 @@ namespace POSI
                             MessageBox.Show("最大浓缩倍数过低，无法计算，请重新输入~");
                         else
                         {
-                            int Chart_N1 = Convert.ToInt32((COC_Cl - COC_Al) / Delta_Coc) + 1;
+                            int Chart_N1 = Convert.ToInt32((COC_Cl - COC_Al) / Delta_Coc);
                             int Chart_N2 = Convert.ToInt32((COC_Al - Coc_Min) / Delta_Coc);
-                            double[] X1_Axis = new double[Chart_N1];
-                            double[] Y1_Axis = new double[Chart_N1];
-                            double[] X2_Axis = new double[Chart_N2];
-                            double[] Y2_Axis = new double[Chart_N2];
-                            for (int i = 0; i < Chart_N1; i++)
-                            {
-                                X1_Axis[i] = COC_Cl - (Delta_Coc * i);
-                                Y1_Axis[i] = Math.Round(X1_Axis[i] * Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
-                            }
+                            double[] X1_Axis = new double[Chart_N2];
+                            double[] Y1_Axis = new double[Chart_N2];
+                            double[] X2_Axis = new double[Chart_N1];
+                            double[] Y2_Axis = new double[Chart_N1];
+                            int min = 0;
                             for (int i = 0; i < Chart_N2; i++)
                             {
-                                X2_Axis[i] = COC_Al - (Delta_Coc * i);
+                                X1_Axis[i] = Coc_Min + (Delta_Coc * i);
+                                Y1_Axis[i] = Math.Round(X1_Axis[i] * Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                                if (i > 0)
+                                {
+                                    if (Y1_Axis[i] > Y1_Axis[i - 1])
+                                        Y1_Axis[i] = Y1_Axis[i - 1];
+                                    else
+                                        min = min + 1;
+                                }
+                            }
+                            min = 0;
+                            for (int i = 0; i < Chart_N1; i++)
+                            {
+                                X2_Axis[i] = COC_Al + (Delta_Coc * i);
                                 Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                                if (i > 0)
+                                {
+                                    if (Y2_Axis[i] > Y2_Axis[i - 1])
+                                        Y2_Axis[i] = Y2_Axis[i - 1];
+                                    else
+                                        min = min + 1;
+                                }
                             }
                             Xmax_Axis[0] = COC_Cl;
-                            Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            Ymax_Axis[0] = Y2_Axis[min];
 
                             Xmin_Axis[0] = COC_Al;
-                            Ymin_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
-                            chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
-                            chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
+                            Ymin_Axis[0] = Math.Round(Xmin_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmin_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            chart1.Series[0].Points.DataBindXY(Y2_Axis, X2_Axis);
+                            chart1.Series[1].Points.DataBindXY(Y1_Axis, X1_Axis);
                             chart1.Series[2].Points.DataBindXY(Ymin_Axis, Xmin_Axis);
-                            chart1.Series[3].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
-                            for (int row = 0; row < Chart_N1; row++) //填充行数据
+                            //chart1.Series[3].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
+                            if (Chart_N1 != 0)
+                                chart1.Series[3].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
+                            for (int row = 0; row < Chart_N2; row++) //填充行数据
                             {
                                 DataRow dr = dt.NewRow();
 
-                                dr[0] = X1_Axis[row];
-                                dr[1] = Y1_Axis[row];
+                                dr[0] = Y1_Axis[row];
+                                dr[1] = X1_Axis[row];
                                 
                                 dt.Rows.Add(dr);
                             }
-                            //for (int row = 0; row < Chart_N2; row++) //填充行数据
-                            //{
-                            //    DataRow dr = dt.NewRow();
-                            //    dr[0] = X2_Axis[row];
-                            //    dr[1] = Y2_Axis[row];
-                            //    dt.Rows.Add(dr);
-                            //}
+                            for (int row = 0; row < Chart_N1; row++) //填充行数据
+                            {
+                                DataRow dr = dt.NewRow();
+                                dr[0] = Y2_Axis[row];
+                                dr[1] = X2_Axis[row];
+                                dt.Rows.Add(dr);
+                            }
                             dataGridView1.DataSource = dt;
                         }
                     }
