@@ -64,8 +64,10 @@ namespace POSI
             label31.Text = (Cl_SO4 * COC_Cl).ToString();
             label36.Text = (SiO2 * COC_Cl).ToString();
             label39.Text = (Mg_SiO2 * COC_Cl).ToString();
-            dt.Columns.Add("浓缩倍数");
+
             dt.Columns.Add("循环水控制碱度");
+            dt.Columns.Add("浓缩倍数");
+            
             Hide();
             Show_settingform();
         }
@@ -78,9 +80,6 @@ namespace POSI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //SaveFileDialog saveFileDialog = new SaveFileDialog();
-            //DialogResult dialogResult = saveFileDialog.ShowDialog();
-
             if (dt.Rows.Count == 0)
                 MessageBox.Show("没有任何数据可以导入到Excel文件！");
             else
@@ -94,6 +93,35 @@ namespace POSI
                 if (SaveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     //此处做你想做的事 ...=SaveFileDialog.FileName;
+                    DataRow dr = dt.NewRow();
+                    dr[0] = label2.Text;
+                    dt.Rows.Add(dr);
+
+                    dr = dt.NewRow();
+                    dr[0] = label3.Text;
+                    dr[1] = label4.Text;
+                    dt.Rows.Add(dr);
+
+                    dr = dt.NewRow();
+                    dr[0] = label8.Text;
+                    dr[1] = label7.Text;
+                    dt.Rows.Add(dr);
+
+                    dr = dt.NewRow();
+                    dr[0] = label20.Text;
+                    dr[1] = label19.Text;
+                    dt.Rows.Add(dr);
+
+                    dr = dt.NewRow();
+                    dr[0] = label17.Text;
+                    dr[1] = label16.Text;
+                    dt.Rows.Add(dr);
+
+                    dr = dt.NewRow();
+                    dr[0] = label14.Text;
+                    dr[1] = label13.Text;
+                    dt.Rows.Add(dr);
+
                     DataTable excelTable = dt;
                     Microsoft.Office.Interop.Excel.Application ExcelFile = new Microsoft.Office.Interop.Excel.Application();
                     try
@@ -131,10 +159,12 @@ namespace POSI
                     {
                         MessageBox.Show("导出Excel出错！错误原因：" + err.Message, "提示信息");
                     }
+                    MessageBox.Show("导出Excel完成！", "提示信息");
                 }
+                else
+                    MessageBox.Show("未能导出Excel文件！", "提示信息");
             }
             //Close();
-            MessageBox.Show("导出Excel完成！", "提示信息");
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -239,6 +269,12 @@ namespace POSI
                     double[] Y_Axis = new double[count];
                     Xmin_Axis[0] = COC_Cl;
                     Ymin_Axis[0] = Alkalinity_Max;
+                    
+                    for (int i = 0; i < count; i++)
+                    {
+                        X_Axis[i] = COC_Cl + (Delta_Coc * i);
+                        Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                    }
                     for (int i = 0; i < count; i++)
                     {
                         X_Axis[i] = COC_Cl + (Delta_Coc * i);
@@ -253,23 +289,26 @@ namespace POSI
                         Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                     }
 
-                    //chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
+                    chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                     chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
                     chart1.Series[2].Points.DataBindXY(Ymin_Axis, Xmin_Axis);
-                    chart1.Series[3].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
+                    if (count != 0)
+                        chart1.Series[3].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
                     
-                    for (int row = 0; row < count; row++) //填充行数据
-                    {
-                        DataRow dr = dt.NewRow();
-                        dr[0] = X_Axis[row];
-                        dr[1] = Y_Axis[row];
-                        dt.Rows.Add(dr);
-                    }
+                    //for (int row = 0; row < count; row++) //填充行数据
+                    //{
+                    //    DataRow dr = dt.NewRow();
+                    //    dr[0] = Y_Axis[row];
+                    //    dr[1] = X_Axis[row];
+                    //    dt.Rows.Add(dr);
+                    //}
                     for (int row = 0; row < Chart_N; row++) //填充行数据
                     {
                         DataRow dr = dt.NewRow();
-                        dr[0] = X2_Axis[row];
-                        dr[1] = Y2_Axis[row];
+
+                        dr[0] = Y2_Axis[row];
+                        dr[1] = X2_Axis[row];
+                        
                         dt.Rows.Add(dr);
                     }
                     dataGridView1.DataSource = dt;
@@ -291,7 +330,7 @@ namespace POSI
                         Ca_Alkalinity = Ca + Alkalinity_Input;
                         label_COCmax.Text = "最大浓缩倍数：\n（受循环水氯离子限制）";
                         
-                        label13.Text = Math.Round(COC_Cl * Alkalinity_Input, Round_Digital).ToString();
+                        label13.Text = Math.Round(Alkalinity_Input, Round_Digital).ToString();
                         label21.Text = COC_Cl.ToString();
                         label22.Text = (Cond * COC_Cl).ToString();
                         label24.Text = (Alkalinity_Input * COC_Cl).ToString();
@@ -315,17 +354,19 @@ namespace POSI
                         for (int i = 0; i < Chart_N; i++)
                         {
                             X_Axis[i] = COC_Cl - (Delta_Coc * i);
-                            Y_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            Y_Axis[i] = Math.Round(X_Axis[i] * Math.Pow(10, 1 / Math.Log10(X_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                         }
                         Xmax_Axis[0] = COC_Cl;
-                        Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                        Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0]) / 1.5 / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                         chart1.Series[0].Points.DataBindXY(Y_Axis, X_Axis);
                         chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
                         for (int row = 0; row < Chart_N; row++) //填充行数据
                         {
                             DataRow dr = dt.NewRow();
+
                             dr[0] = X_Axis[row];
                             dr[1] = Y_Axis[row];
+                            
                             dt.Rows.Add(dr);
                         }
                         dataGridView1.DataSource = dt;
@@ -335,7 +376,10 @@ namespace POSI
                         label_COCmax.Text = "最大浓缩倍数：\n（受循环水碱度限制）";
                         double[] Xmax_Axis = new double[1];
                         double[] Ymax_Axis = new double[1];
+                        double[] Xmin_Axis = new double[1];
+                        double[] Ymin_Axis = new double[1];
                         Ca_Alkalinity = Ca + Alkalinity_Input;
+                        label13.Text = Math.Round(Alkalinity_Input, Round_Digital).ToString();
                         label21.Text = COC_Al.ToString();
                         label22.Text = (Cond * COC_Al).ToString();
                         label24.Text = (Alkalinity_Input * COC_Al).ToString();
@@ -364,33 +408,38 @@ namespace POSI
                             for (int i = 0; i < Chart_N1; i++)
                             {
                                 X1_Axis[i] = COC_Cl - (Delta_Coc * i);
-                                Y1_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                                Y1_Axis[i] = Math.Round(X1_Axis[i] * Math.Pow(10, 1 / Math.Log10(X1_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                             }
                             for (int i = 0; i < Chart_N2; i++)
                             {
                                 X2_Axis[i] = COC_Al - (Delta_Coc * i);
-                                Y2_Axis[i] = Math.Round(Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                                Y2_Axis[i] = Math.Round(X2_Axis[i] * Math.Pow(10, 1 / Math.Log10(X2_Axis[i] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                             }
-                            Xmax_Axis[0] = COC_Al;
-                            Ymax_Axis[0] = Math.Round(Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+                            Xmax_Axis[0] = COC_Cl;
+                            Ymax_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
+
+                            Xmin_Axis[0] = COC_Al;
+                            Ymin_Axis[0] = Math.Round(Xmax_Axis[0] * Math.Pow(10, 1 / Math.Log10(Xmax_Axis[0] / 1.5) / Math.Log10(Ca * Mg / (Cl + Na)) + 1), Round_Digital);
                             chart1.Series[0].Points.DataBindXY(Y1_Axis, X1_Axis);
-                            //chart1.Series.Add("Series2");
                             chart1.Series[1].Points.DataBindXY(Y2_Axis, X2_Axis);
-                            chart1.Series[2].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
+                            chart1.Series[2].Points.DataBindXY(Ymin_Axis, Xmin_Axis);
+                            chart1.Series[3].Points.DataBindXY(Ymax_Axis, Xmax_Axis);
                             for (int row = 0; row < Chart_N1; row++) //填充行数据
                             {
                                 DataRow dr = dt.NewRow();
+
                                 dr[0] = X1_Axis[row];
                                 dr[1] = Y1_Axis[row];
+                                
                                 dt.Rows.Add(dr);
                             }
-                            for (int row = 0; row < Chart_N2; row++) //填充行数据
-                            {
-                                DataRow dr = dt.NewRow();
-                                dr[0] = X2_Axis[row];
-                                dr[1] = Y2_Axis[row];
-                                dt.Rows.Add(dr);
-                            }
+                            //for (int row = 0; row < Chart_N2; row++) //填充行数据
+                            //{
+                            //    DataRow dr = dt.NewRow();
+                            //    dr[0] = X2_Axis[row];
+                            //    dr[1] = Y2_Axis[row];
+                            //    dt.Rows.Add(dr);
+                            //}
                             dataGridView1.DataSource = dt;
                         }
                     }
