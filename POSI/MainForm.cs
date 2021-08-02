@@ -342,7 +342,7 @@ namespace POSI
                         label21.Text = COC_Cl.ToString();
                         label22.Text = (Cond * COC_Cl).ToString();
                         label24.Text = (Alkalinity_Input * COC_Cl).ToString();
-                        label33.Text = (Ca_Alkalinity * COC_Cl).ToString();
+                        label33.Text = Ca_Alkalinity.ToString();
                         label31.Text = (Cl_SO4 * COC_Cl).ToString();
                         label36.Text = (SiO2 * COC_Cl).ToString();
                         label39.Text = (Mg_SiO2 * COC_Cl).ToString();
