@@ -257,12 +257,20 @@ namespace POSI
 
                     if (Ca_Alkalinity > 1100)
                         label33.BackColor = Color.Yellow;
+                    else
+                        label33.BackColor = SystemColors.Control;
                     if ((Cl_SO4 * COC_Al) > 2500)
                         label31.BackColor = Color.Yellow;
+                    else
+                        label31.BackColor = SystemColors.Control;
                     if ((SiO2 * COC_Al) > 175)
                         label36.BackColor = Color.Yellow;
+                    else
+                        label36.BackColor = SystemColors.Control;
                     if ((Mg_SiO2 * COC_Al) > 50000)
                         label39.BackColor = Color.Yellow;
+                    else
+                        label39.BackColor = SystemColors.Control;
 
                     double[] Xmin_Axis = new double[1];
                     double[] Ymin_Axis = new double[1];
@@ -406,12 +414,20 @@ namespace POSI
                         label39.Text = (Mg_SiO2 * COC_Al).ToString();
                         if (Ca_Alkalinity > 1100)
                             label33.BackColor = Color.Yellow;
-                        if ((Cl_SO4 * COC_Cl) > 2500)
+                        else
+                            label33.BackColor = SystemColors.Control;
+                        if ((Cl_SO4 * COC_Al) > 2500)
                             label31.BackColor = Color.Yellow;
-                        if ((SiO2 * COC_Cl) > 175)
+                        else
+                            label31.BackColor = SystemColors.Control;
+                        if ((SiO2 * COC_Al) > 175)
                             label36.BackColor = Color.Yellow;
-                        if ((Mg_SiO2 * COC_Cl) > 50000)
+                        else
+                            label36.BackColor = SystemColors.Control;
+                        if ((Mg_SiO2 * COC_Al) > 50000)
                             label39.BackColor = Color.Yellow;
+                        else
+                            label39.BackColor = SystemColors.Control;
                         if (COC_Al < Coc_Min)
                             MessageBox.Show("最大浓缩倍数过低，无法计算，请重新输入~");
                         else

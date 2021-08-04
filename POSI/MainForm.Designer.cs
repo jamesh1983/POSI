@@ -471,6 +471,7 @@
             // label33
             // 
             this.label33.AutoSize = true;
+            this.label33.BackColor = System.Drawing.SystemColors.Control;
             this.label33.Location = new System.Drawing.Point(160, 266);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(29, 12);
