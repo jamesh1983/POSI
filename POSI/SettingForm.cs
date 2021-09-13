@@ -172,7 +172,7 @@ namespace POSI
                     Value_Total_Alkalinity.Enabled = false;
                     Value_Alkalinity_Input.Enabled = true;
                     //Value_Alkalinity_Input.Text = "";
-                    MainForm.Alkalinity_Flag = false;
+                    MainForm.posi.Alkalinity_Flag = false;
                     break;
                 case CheckState.Checked:
                     checkBox4.Checked = false;
@@ -180,7 +180,7 @@ namespace POSI
                     Value_Total_Alkalinity.Enabled = true;
                     Value_Alkalinity_Input.Enabled = false;
                     Value_Alkalinity_Input.Text = "";
-                    MainForm.Alkalinity_Flag = true;
+                    MainForm.posi.Alkalinity_Flag = true;
                     break;
                 case CheckState.Indeterminate:
                     break;
@@ -199,7 +199,7 @@ namespace POSI
                     Value_Total_Alkalinity.Enabled = true;
                     Value_Alkalinity_Input.Enabled = false;
                     Value_Alkalinity_Input.Text = "";
-                    MainForm.Alkalinity_Input_Flag = false;
+                    MainForm.posi.Alkalinity_Input_Flag = false;
                     break;
                 case CheckState.Checked:
                     checkBox3.Checked = false;
@@ -207,7 +207,7 @@ namespace POSI
                     Value_Total_Alkalinity.Enabled = false;
                     Value_Alkalinity_Input.Enabled = true;
                     //Value_Alkalinity_Input.Text = "";
-                    MainForm.Alkalinity_Input_Flag = true;
+                    MainForm.posi.Alkalinity_Input_Flag = true;
                     break;
                 case CheckState.Indeterminate:
                     break;
@@ -315,7 +315,7 @@ namespace POSI
             {
                 if (Value_Ca_CaCO3.Text != "")
                 {
-                    Value_Ca_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_CaCO3.Text) / Convert.ToDouble(MainForm.C_Ca), 2));
+                    Value_Ca_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_CaCO3.Text) / Convert.ToDouble(POSI.C_Ca), 2));
                     //MainForm.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
                     //MainForm.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
                 }
@@ -333,7 +333,7 @@ namespace POSI
             if (checkBox1.Checked)
             {
                 if (Value_Mg_CaCO3.Text != "")
-                    Value_Mg_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) / Convert.ToDouble(MainForm.C_Mg), 2));
+                    Value_Mg_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) / Convert.ToDouble(POSI.C_Mg), 2));
                 if ((Value_Ca_CaCO3.Text != "") && (Value_Mg_CaCO3.Text != ""))
                     Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
                 if ((Value_SiO2.Text != "") && (Value_Mg_CaCO3.Text != ""))
@@ -347,7 +347,7 @@ namespace POSI
             if (checkBox2.Checked)
             {
                 if (Value_Ca_.Text != "")
-                    Value_Ca_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_.Text) * Convert.ToDouble(MainForm.C_Ca), 3));
+                    Value_Ca_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_.Text) * Convert.ToDouble(POSI.C_Ca), 3));
                 if ((Value_Mg_CaCO3.Text != "") && (Value_Mg_CaCO3.Text != ""))
                     Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
                 if ((Value_Total_Alkalinity.Text != "") && (Value_Ca_.Text != ""))
@@ -361,7 +361,7 @@ namespace POSI
             if (checkBox2.Checked)
             {
                 if (Value_Mg_.Text != "")
-                    Value_Mg_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_.Text) * Convert.ToDouble(MainForm.C_Mg), 3));
+                    Value_Mg_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_.Text) * Convert.ToDouble(POSI.C_Mg), 3));
                 if ((Value_Ca_CaCO3.Text != "") && (Value_Mg_CaCO3.Text != ""))
                     Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
                 if (Value_SiO2.Text != "")
@@ -373,7 +373,7 @@ namespace POSI
         private void Value_Total_Alkalinity_TextChanged(object sender, EventArgs e)
         {
             if (Value_Total_Alkalinity.Text != "")
-                MainForm.Alkalinity = Convert.ToDouble(Value_Total_Alkalinity.Text);
+                MainForm.posi.Alkalinity_Max = Convert.ToDouble(Value_Total_Alkalinity.Text);
         }
 
         private void Value_Alkalinity_Input_TextChanged(object sender, EventArgs e)
@@ -381,8 +381,8 @@ namespace POSI
             if ((Value_Alkalinity_Input.Text != "") && (Value_Ca_CaCO3.Text != ""))
             {
                 Value_Ca_Alkalinity.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Alkalinity_Input.Text));
-                MainForm.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
-                MainForm.Alkalinity_Input = Convert.ToDouble(Value_Alkalinity_Input.Text);
+                MainForm.posi.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
+                MainForm.posi.Alkalinity_Input = Convert.ToDouble(Value_Alkalinity_Input.Text);
             }
         }
 
@@ -433,28 +433,31 @@ namespace POSI
         private void button1_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            Hide();
+            MainForm.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             if (Check_All_Data())
             {
-                MainForm.Cl = Convert.ToDouble(Value_Cl_.Text);
-                MainForm.Clmax = Convert.ToDouble(Value_Cl_Limit.Text);
-                MainForm.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
-                MainForm.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
-                MainForm.Na = Convert.ToDouble(Value_Na_.Text);
-                MainForm.Cond = Convert.ToDouble(Value_Cond.Text);
-                //MainForm.Alkalinity = Convert.ToDouble(Value_Total_Alkalinity.Text);
+                MainForm.posi.Cl = Convert.ToDouble(Value_Cl_.Text);
+                MainForm.posi.Clmax = Convert.ToDouble(Value_Cl_Limit.Text);
+                MainForm.posi.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
+                MainForm.posi.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
+                MainForm.posi.Na = Convert.ToDouble(Value_Na_.Text);
+                MainForm.posi.Cond = Convert.ToDouble(Value_Cond.Text);
+                //MainForm.posi.Alkalinity = Convert.ToDouble(Value_Total_Alkalinity.Text);
 
-                //MainForm.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
-                MainForm.Cl_SO4 = Convert.ToDouble(Value_Cl_SO4_.Text);
-                MainForm.SiO2 = Convert.ToDouble(Value_SiO2.Text);
-                MainForm.Mg_SiO2 = Convert.ToDouble(Value_Mg_SiO2.Text);
+                //MainForm.posi.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
+                MainForm.posi.Cl_SO4 = Convert.ToDouble(Value_Cl_SO4_.Text);
+                MainForm.posi.SiO2 = Convert.ToDouble(Value_SiO2.Text);
+                MainForm.posi.Mg_SiO2 = Convert.ToDouble(Value_Mg_SiO2.Text);
                 //MainForm.Alkalinity_Input = Convert.ToDouble(Value_Alkalinity_Input.Text);
+                DialogResult = DialogResult.OK;
                 Hide();
                 MainForm.Show();
-                DialogResult = DialogResult.OK;
+                
                 MainForm.Calculate_COC();
             }
             //DialogResult = DialogResult.Cancel;
