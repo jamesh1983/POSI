@@ -315,7 +315,7 @@ namespace POSI
             {
                 if (Value_Ca_CaCO3.Text != "")
                 {
-                    Value_Ca_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_CaCO3.Text) / Convert.ToDouble(POSI.C_Ca), 2));
+                    Value_Ca_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_CaCO3.Text) / Convert.ToDouble(POSI.C_Ca), POSI.Round_Digital));
                     //MainForm.Ca = Convert.ToDouble(Value_Ca_CaCO3.Text);
                     //MainForm.Ca_Alkalinity = Convert.ToDouble(Value_Ca_Alkalinity.Text);
                 }
@@ -333,11 +333,11 @@ namespace POSI
             if (checkBox1.Checked)
             {
                 if (Value_Mg_CaCO3.Text != "")
-                    Value_Mg_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) / Convert.ToDouble(POSI.C_Mg), 2));
+                    Value_Mg_.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) / Convert.ToDouble(POSI.C_Mg), POSI.Round_Digital));
                 if ((Value_Ca_CaCO3.Text != "") && (Value_Mg_CaCO3.Text != ""))
                     Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
                 if ((Value_SiO2.Text != "") && (Value_Mg_CaCO3.Text != ""))
-                    Value_Mg_SiO2.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) * Convert.ToDouble(Value_SiO2.Text), 2));
+                    Value_Mg_SiO2.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) * Convert.ToDouble(Value_SiO2.Text), POSI.Round_Digital));
                 //MainForm.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
             }
         }
@@ -347,7 +347,7 @@ namespace POSI
             if (checkBox2.Checked)
             {
                 if (Value_Ca_.Text != "")
-                    Value_Ca_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_.Text) * Convert.ToDouble(POSI.C_Ca), 3));
+                    Value_Ca_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Ca_.Text) * Convert.ToDouble(POSI.C_Ca), POSI.Round_Digital));
                 if ((Value_Mg_CaCO3.Text != "") && (Value_Mg_CaCO3.Text != ""))
                     Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
                 if ((Value_Total_Alkalinity.Text != "") && (Value_Ca_.Text != ""))
@@ -361,11 +361,11 @@ namespace POSI
             if (checkBox2.Checked)
             {
                 if (Value_Mg_.Text != "")
-                    Value_Mg_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_.Text) * Convert.ToDouble(POSI.C_Mg), 3));
+                    Value_Mg_CaCO3.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_.Text) * Convert.ToDouble(POSI.C_Mg), POSI.Round_Digital));
                 if ((Value_Ca_CaCO3.Text != "") && (Value_Mg_CaCO3.Text != ""))
                     Value_Total_Hardness.Text = Convert.ToString(Convert.ToDouble(Value_Ca_CaCO3.Text) + Convert.ToDouble(Value_Mg_CaCO3.Text));
                 if (Value_SiO2.Text != "")
-                    Value_Mg_SiO2.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) * Convert.ToDouble(Value_SiO2.Text), 3));
+                    Value_Mg_SiO2.Text = Convert.ToString(Math.Round(Convert.ToDouble(Value_Mg_CaCO3.Text) * Convert.ToDouble(Value_SiO2.Text), POSI.Round_Digital));
                 //MainForm.Mg = Convert.ToDouble(Value_Mg_CaCO3.Text);
             }
         }
